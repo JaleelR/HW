@@ -2,7 +2,7 @@
 {% block content %}
 <h1>{{title}}</h1>
 <h2>{{instructions}}</h2>
-<form action= "{{ url_for('answer', qid=0) }}" method="post">
+<form action= "/responses" method="POST">
     <button type="submit">Start</button>
 </form>
 {% endblock %}
