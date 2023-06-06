@@ -28,6 +28,7 @@ def show_question(qid):
     if response is []:
         return redirect("/")
 
+    next_question_index = len(response)
     # Check if the question ID is out of bounds
     if qid > len(qobj):
         flash("Out of order!!!!!!")
@@ -35,9 +36,8 @@ def show_question(qid):
         
     # Check if the user hasn't answered the previous question
     if qid > 1 and qid - 1 > len(response): 
-    
          # Assuming `responses` is a list storing user responses
-        return redirect(url_for("show_question",  qid = qid- 1))  # Redirect to the previous question
+        return redirect(url_for("show_question",  qid = len(response) -1 ))  # Redirect to the previous question
 
     quest = qobj[qid].question  # Adjusting index to match 0-based indexing
     print(len(qobj))
@@ -45,13 +45,14 @@ def show_question(qid):
     return render_template("questions.html", final_question=quest, choice=qlist)
 
 
-@app.route('/answer', methods = ["POST"])
+@app.route('/answer', methods = ["POST", "GET"])
 def answer():
     response = session["response"]
     answer = request.form.get("answer")
-    if len(response) < 4: 
-      next_question_index = len(response)  
+    
+    if len(response) < len(satisfaction_survey.questions): 
       response.append(answer)
+      next_question_index = len(response)
       session['response'] = response
 
       print(response)
